@@ -1,41 +1,3 @@
-# import streamlit as st
-# from ollama import Ollama
-
-# st.title("DeepSeek-R1:1.5b Assistant")
-# st.subheader("Powered by Ollama")
-
-# # Initialize Ollama with DeepSeek-R1:1.5b model
-# ollama = Ollama(model="deepseek-r1:1.5b")
-
-# # Create a text input box
-# user_input = st.text_input("Enter your query:")
-
-# # Display the response
-# if st.button("Submit"):
-#     response = ollama.generate(user_input)
-#     st.write(response)
-
-
-
-# import streamlit as st
-# import ollama
-
-# st.title("DeepSeek-R1:1.5B Assistant")
-# st.subheader("Powered by Ollama")
-
-# # Create a text input box
-# user_input = st.text_input("Enter your query:")
-
-# # Display the response
-# if st.button("Submit") and user_input:
-#     response = ollama.chat(model="deepseek-r1:1.5b", messages=[{"role": "user", "content": user_input}])
-#     st.write(response["message"]["content"])
-
-
-
-
-
-
 import streamlit as st
 import ollama
 import base64
@@ -55,14 +17,10 @@ def add_bg_from_path(image_path):
         }}
         /* Custom styles for better visibility */
         .stTextInput {{
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0);
             color: white;
-        }}
-        .stMarkdown {{
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
+            text-align: center;
+            width: 500px; /* Adjusted width */
         }}
         .title {{
             position: absolute;
@@ -73,13 +31,11 @@ def add_bg_from_path(image_path):
             background-color: rgba(0, 0, 0, 0.9);
             border-radius: 5px;
         }}
-        .response-container {{
-            background-color: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        .query-container {{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 10vh; /* Adjusted height */
         }}
         </style>
         """,
@@ -87,7 +43,7 @@ def add_bg_from_path(image_path):
     )
 
 # Configure page
-st.set_page_config(page_title="AJ'S DeepSeek Assistant", layout="wide")
+st.set_page_config(page_title="DeepSeek Assistant", layout="wide")
 
 # Add background
 add_bg_from_path("Screenshot 2025-01-31 023542.png")
@@ -95,18 +51,23 @@ add_bg_from_path("Screenshot 2025-01-31 023542.png")
 # Small title on the left
 st.markdown("<div class='title'>AJ</div>", unsafe_allow_html=True)
 
-# Create a text input box
-user_input = st.text_input("Enter your query:")
+# Center the query input box with a container
+st.markdown("<div class='query-container'>", unsafe_allow_html=True)
+user_input = st.text_input("Enter your query:", key="query_input", help="Type your query here", label_visibility="hidden")
+st.markdown("</div>", unsafe_allow_html=True)
 
-# Display the response
+# Center the button and response container
 if st.button("Submit") and user_input:
-    response = ollama.chat(model="deepseek-r1:1.5b", messages=[{"role": "user", "content": user_input}])
+    response = ollama.chat(model="deepseek-r1:7b", messages=[{"role": "user", "content": user_input}])
     # Modify the response to start with "Darling"
     modified_response = "Darling, " + response["message"]["content"]
     st.markdown(f"""
-        <div class='response-container'>
+        <div style='background-color: rgba(0, 0, 0, 0.9); 
+                    color: white; 
+                    padding: 20px; 
+                    border-radius: 10px; 
+                    margin-top: 20px; 
+                    text-align: left;'>
             {modified_response}
         </div>
     """, unsafe_allow_html=True)
-
-
